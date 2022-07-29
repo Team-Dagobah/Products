@@ -1,14 +1,31 @@
-const express = require('express');
+require("dotenv").config();
+const express = require("express");
+
+const db = require('./db.js')
+
 const app = express();
-const port = 3000;
-const path = require('path');
 
-app.use(express.static('dist'));
+app.use(express.json())
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
+db.connect();
 
-app.listen(port, () =>
-  console.log(`Example app listening at http://localhost:${port}`)
-);
+app.listen(3000, ()=> console.log("Listening at port 3000"))
+
+app.get('/products', (req, res) => {
+  let page = req.query.page || 1
+  let count = req.query.count || 5
+  if(page === 1){
+    db.query(`Select * from products order by id asc limit ${count}`, (err, result) =>{
+      if(!err) {
+        res.status(200).send(result.rows)
+      }
+    });
+  } else {
+    db.query(`Select * from products where id > ${(page - 1)*count} order by id asc limit ${count}`, (err, result) =>{
+      if(!err) {
+        res.status(200).send(result.rows)
+      }
+    });
+  }
+  // db.end;
+})
