@@ -52,7 +52,7 @@ app.get('/products', (req, res) => {
 app.get(`/products/:product_id`, (req, res) =>{
   db.getRelatedProducts(req.params.product_id)
   .then((result) => {
-    res.status(200).send(result.rows)
+    res.status(200).send(result.rows[0].json_agg)
   })
   .catch(err => console.log(err))
 })

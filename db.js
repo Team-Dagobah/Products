@@ -16,7 +16,7 @@ db.connectAsync()
   .catch((err) => console.log(`DB Connection ERROR`, err))
 
 let getRelatedProducts = (current_product_id) => {
-  return db.queryAsync(`SELECT related_product_id FROM related
+  return db.queryAsync(`SELECT json_agg(related_product_id) FROM related
     where current_product_id = ${current_product_id}`)
     .then(results => {return results[0]})
     .catch(err => console.log(err))
