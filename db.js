@@ -34,4 +34,26 @@ let getProductsListCustomPage = (count, page) => {
   .catch(err => console.log(err))
 }
 
-module.exports = {db, getRelatedProducts, getProductsListCustomPage, getProductsListDefaultPage};
+let getProductInfo = (product_id) => {
+  return db.queryAsync(
+    `select json_build_object('id', id,
+                             'name', name,
+                             'slogan', slogan,
+                             'description', description,
+                             'category', category,
+                             'default_price', default_price,
+                             'features', featuresarray
+                             ) productsobj
+                             from products
+                             left join
+                             (select product_id,
+                              json_agg(json_build_object( 'feature', feature, 'value', value)) featuresarray
+                              from features as f group by product_id)
+                              f on id = f.product_id
+                              where product_id = ${product_id}`)
+   .then(result => result[0])
+   .catch(err => console.log(err))
+}
+
+
+module.exports = {db, getRelatedProducts, getProductInfo, getProductsListCustomPage, getProductsListDefaultPage};

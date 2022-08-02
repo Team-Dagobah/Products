@@ -56,4 +56,13 @@ app.get(`/products/:product_id/related`, (req, res) =>{
   .catch(err => console.log(err))
 })
 
+app.get(`/products/:product_id`, (req, res) =>{
+  db.getProductInfo(req.params.product_id)
+  .then((result) => {
+    console.log(result)
+    res.status(200).send(result.rows[0].productsobj)
+  })
+  .catch(err => console.log(err))
+})
+
 //add EXPLAIN ANALYZE in front of query to see
