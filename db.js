@@ -64,7 +64,7 @@ let getProductStyles = (product_id) => {
         styles.name,
         styles.original_price,
         styles.sale_price,
-        styles.default_style as "default?",
+        Cast(styles.default_style as boolean) as "default?",
         ( SELECT json_agg(item)
           FROM ( SELECT
             photos.thumbnail_url,
