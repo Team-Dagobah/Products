@@ -9,27 +9,7 @@ app.use(express.json())
 
 app.listen(3000, ()=> console.log("Server listening at port 3000"))
 
-// app.get('/products', (req, res) => {
-//   let page = req.query.page || 1
-//   let count = req.query.count || 5
-//   if(page === 1){
-//     db.query(`Select * from products order by id asc limit ${count}`, (err, result) =>{
-//       if(!err) {
-//         res.status(200).send(result.rows)
-//       } else{
-//         console.log(err)
-//       }
-//     });
-//   } else {
-//     db.query(`Select * from products where id > ${(page - 1)*count} order by id asc limit ${count}`, (err, result) =>{
-//       if(!err) {
-//         res.status(200).send(result.rows)
-//       }else{
-//         console.log(err)
-//       }
-//     });
-//   }
-// })
+
 app.get('/products', (req, res) => {
   let page = req.query.page || 1
   let count = req.query.count || 5
@@ -61,6 +41,15 @@ app.get(`/products/:product_id`, (req, res) =>{
   .then((result) => {
     console.log(result)
     res.status(200).send(result.rows[0].productsobj)
+  })
+  .catch(err => console.log(err))
+})
+
+app.get(`/products/:product_id/styles`, (req, res) =>{
+  db.getProductStyles(req.params.product_id)
+  .then((result) => {
+    console.log(result)
+    res.status(200).send(result.rows[0])
   })
   .catch(err => console.log(err))
 })

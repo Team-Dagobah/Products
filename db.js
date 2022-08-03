@@ -55,5 +55,39 @@ let getProductInfo = (product_id) => {
    .catch(err => console.log(err))
 }
 
+let getProductStyles = (product_id) => {
+  return db.queryAsync(`SELECT
+  products.id AS product_id,
+  ( SELECT json_agg(result)
+    FROM ( SELECT
+        styles.id AS style_id,
+        styles.name,
+        styles.original_price,
+        styles.sale_price,
+        styles.default_style as "default?",
+        ( SELECT json_agg(item)
+          FROM ( SELECT
+            photos.thumbnail_url,
+            photos.url
+            FROM photos
+            WHERE photos.style_id = styles.id
+              ) item
+            ) AS photos,
+        (SELECT json_object_agg(
+              skus.id, json_build_object('quantity', skus.quantity, 'size', skus.size))
+          FROM skus
+          WHERE skus.style_id = styles.id
+          ) AS skus
 
-module.exports = {db, getRelatedProducts, getProductInfo, getProductsListCustomPage, getProductsListDefaultPage};
+          FROM styles
+          WHERE styles.product_id = products.id
+      ) result
+    ) AS results
+  FROM products
+  WHERE products.id = ${product_id}`)
+  .then(result => result[0])
+  .catch(err => console.log(err))
+}
+
+
+module.exports = {db, getRelatedProducts, getProductStyles, getProductInfo, getProductsListCustomPage, getProductsListDefaultPage};
