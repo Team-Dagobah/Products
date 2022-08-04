@@ -78,7 +78,6 @@ let getProductStyles = (product_id) => {
           FROM skus
           WHERE skus.style_id = styles.id
           ) AS skus
-
           FROM styles
           WHERE styles.product_id = products.id
       ) result
