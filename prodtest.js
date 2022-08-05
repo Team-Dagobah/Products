@@ -20,7 +20,7 @@ const url = `http://localhost:3000/products`
 
 
 export default function () {
-  let count = 1000;
+  let count = Math.floor(Math.random()* 10000);
   let page = 900 + Math.floor(Math.random() * 100)
   let res = http.get(`http://localhost:3000/products?count=${count}&page=${page}`)
   sleep(1);

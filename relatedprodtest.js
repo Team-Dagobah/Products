@@ -20,9 +20,8 @@ const url = `http://localhost:3000/products`
 
 
 export default function () {
-  let count = 1000;
-  let page = 900 + Math.floor(Math.random() * 100)
-  let res = http.get(`http://localhost:3000/products?count=${count}&page=${page}`)
+  let product_id = 900000 + Math.floor(Math.random() * 100000)
+  let res = http.get(`http://localhost:3000/products/${product_id}/related`)
   sleep(1);
   check(res, {
     'is status 200': r => r.status === 200,

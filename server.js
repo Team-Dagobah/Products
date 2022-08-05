@@ -39,7 +39,6 @@ app.get(`/products/:product_id/related`, (req, res) =>{
 app.get(`/products/:product_id`, (req, res) =>{
   db.getProductInfo(req.params.product_id)
   .then((result) => {
-    console.log(result)
     res.status(200).send(result.rows[0].productsobj)
   })
   .catch(err => console.log(err))
@@ -48,7 +47,6 @@ app.get(`/products/:product_id`, (req, res) =>{
 app.get(`/products/:product_id/styles`, (req, res) =>{
   db.getProductStyles(req.params.product_id)
   .then((result) => {
-    console.log(result)
     res.status(200).send(result.rows[0])
   })
   .catch(err => console.log(err))
