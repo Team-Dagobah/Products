@@ -9,6 +9,10 @@ app.use(express.json())
 
 app.listen(3000, ()=> console.log("Server listening at port 3000"))
 
+//loader.io
+app.get(process.env.TOKEN, (req, res) => {
+  res.send(process.env.TOKEN);
+})
 
 app.get('/products', (req, res) => {
   let page = req.query.page || 1
